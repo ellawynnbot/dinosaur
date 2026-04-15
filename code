@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Brontosaurus Skeleton</title>
+  
+  <style>
+    /* --- CSS: The Styling and Glow Effects --- */
+    body {
+      background-color: #1a1a24;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #ffcc00;
+      letter-spacing: 2px;
+    }
+
+    .dino-container {
+      width: 100%;
+      max-width: 700px; /* Made slightly wider for the long tail/neck */
+      margin-bottom: 30px;
+    }
+
+    .bone {
+      fill: #a0a0b0; 
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .bone:hover, 
+    .bone.active {
+      fill: #ffffff; 
+      filter: drop-shadow(0px 0px 12px #00ffcc); 
+    }
+
+    #fact-box {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100px;
+      background: #2a2a36;
+      border: 2px solid #444;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 8px 15px rgba(0,0,0,0.3);
+    }
+
+    #fact-box h3 {
+      margin-top: 0;
+      color: #00ffcc;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #fact-text {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Interactive Brontosaurus</h1>
+  
+  <div class="dino-container">
+    <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+      
+      <ellipse id="skull" class="bone" cx="80" cy="110" rx="22" ry="15" />
+      
+      <path id="neck" class="bone" d="M95,115 L200,200 L220,175 L105,95 Z" />
+      
+      <ellipse id="ribs" class="bone" cx="280" cy="200" rx="90" ry="55" />
+      
+      <path id="tail" class="bone" d="M360,185 L560,240 L555,250 L350,225 Z" />
+      
+      <rect id="femur" class="bone" x="280" y="230" width="35" height="90" rx="10" />
+      
+      <path id="foot" class="bone" d="M270,320 L325,320 L315,350 L280,350 Z" />
+
+    </svg>
+  </div>
+
+  <div id="fact-box">
+    <h3>Brontosaurus Facts</h3>
+    <p id="fact-text">Tap or hover over a glowing bone to discover a fun fact!</p>
+  </div>
+
+  <script>
+    // 1. The Dictionary holding all Brontosaurus-specific facts
+    const dinoFacts = {
+      "skull": "SKULL: Brontosaurus had a surprisingly tiny head for its massive size. Its teeth were peg-like, perfectly designed for stripping leaves off branches, not for chewing.",
+      "femur": "FEMUR: To support up to 15 tons of weight, the femur (thigh bone) was incredibly thick and pillar-like. They didn't have bent knees like a T-Rex; their legs were straight like columns.",
+      "ribs": "RIBS: The enormous ribcage housed a massive digestive system. Since they didn't chew their food, they needed gigantic stomachs to slowly ferment and break down hundreds of pounds of plants a day.",
+      "tail": "TAIL: Its tail was incredibly long and tapered into a thin whip. Some paleontologists believe they could crack their tails like a bullwhip to create a sonic boom to scare off predators!",
+      "neck": "NECK: A Brontosaurus neck was massive! However, scientists believe they mostly held their necks parallel to the ground to sweep through low-lying ferns, rather than stretching straight up like a giraffe.",
+      "foot": "FOOT: Their feet were similar to an elephant's, featuring large fleshy pads to cushion their heavy steps. The front feet had a single large claw, likely used for defense or digging."
+    };
+
+    // 2. Grab the HTML elements we need to update
+    const factTextElement = document.getElementById("fact-text");
+    const allBones = document.querySelectorAll(".bone");
+
+    // 3. Loop through every bone and add interaction
+    allBones.forEach(bone => {
+      
+      bone.addEventListener("mouseenter", function() {
+        allBones.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        
+        const boneId = this.id;
+        factTextElement.innerText = dinoFacts[boneId];
+      });
+
+      bone.addEventListener("mouseleave", function() {
+        this.classList.remove("active");
+        factTextElement.innerText = "Tap or hover over a glowing bone to discover a fun fact!";
+      });
+      
+      bone.addEventListener("click", function() {
+        allBones.forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        const boneId = this.id;
+        factTextElement.innerText = dinoFacts[boneId];
+      });
+    });
+  </script>
+
+</body>
+</html>
